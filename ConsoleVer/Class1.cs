@@ -63,8 +63,14 @@ namespace ConsoleVer
                 ReviewObject tmpReviewObj = JsonSerializer.Deserialize<ReviewObject>(record);
                 Document doc = new Document();
                 doc.Add(new TextField("ReviewText", tmpReviewObj.ReviewText, Field.Store.YES));
-                doc.Add(new StringField("ProductID", tmpReviewObj.ProductID, Field.Store.YES));
-                doc.Add(new StringField("Summary", tmpReviewObj.SummaryText, Field.Store.YES));
+                doc.Add(new TextField("ProductID", tmpReviewObj.ProductID, Field.Store.YES));
+                doc.Add(new TextField("Summary", tmpReviewObj.SummaryText, Field.Store.YES));
+                doc.Add(new TextField("ReviewerID", tmpReviewObj.ReviewerID, Field.Store.YES));
+                doc.Add(new TextField("ReviewerName", (tmpReviewObj.ReviewerName == null ? "NULL" : tmpReviewObj.ReviewerName), Field.Store.YES));
+                doc.Add(new TextField("ReviewTime", tmpReviewObj.ReviewTime, Field.Store.YES));
+                doc.Add(new Int32Field("UnixReviewTime", tmpReviewObj.UnixReviewTime, Field.Store.YES));
+                doc.Add(new DoubleField("OverAll", tmpReviewObj.OverallRating, Field.Store.YES));
+                doc.Add(new DoubleField("Helpfulness", tmpReviewObj.Helpfulness[0] / (tmpReviewObj.Helpfulness[1] == 0 ? 1 : tmpReviewObj.Helpfulness[1]), Field.Store.YES));
                 writer.AddDocument(doc);
                 result.Add(tmpReviewObj);
             }
@@ -91,8 +97,8 @@ namespace ConsoleVer
             IndexSearcher searcher = new IndexSearcher(reader);
 
             QueryParser parser = new QueryParser(luceneVersion, "ReviewText", indexingAnalyzer);
-            Query query = parser.Parse("then...bam");
-            TopDocs topDocs = searcher.Search(query, 10);         //indicate we want the first 3 results
+            Query query = parser.Parse("ProductID:B0029LJIFG");
+            TopDocs topDocs = searcher.Search(query, 10);//indicate we want the first 3 results
 
 
             Console.WriteLine($"Matching results: {topDocs.TotalHits}");
@@ -101,11 +107,17 @@ namespace ConsoleVer
             {
                 //read back a doc from results
                 Document resultDoc = searcher.Doc(topDocs.ScoreDocs[i].Doc);
-
-                string ProductID = resultDoc.Get("ProductID");
-                Console.WriteLine($"ProductID of result {i + 1}: {ProductID}");
-                string Summary = resultDoc.Get("ReviewText");
-                Console.WriteLine($"ReviewText of result {i + 1}:\n {Summary}");
+                Console.WriteLine("==============================================");
+                Console.WriteLine($"ReviewText of result {i + 1}:\n\t{resultDoc.Get("ReviewText")}");
+                Console.WriteLine($"ProductID of result {i + 1}:\n\t{resultDoc.Get("ProductID")}");
+                Console.WriteLine($"Summary of result {i + 1}:\n\t{resultDoc.Get("Summary")}");
+                Console.WriteLine($"ReviewerID of result {i + 1}:\n\t{resultDoc.Get("ReviewerID")}");
+                Console.WriteLine($"ReviewerName of result {i + 1}:\n\t{resultDoc.Get("ReviewerName")}");
+                Console.WriteLine($"ReviewTime of result {i + 1}:\n\t{resultDoc.Get("ReviewTime")}");
+                Console.WriteLine($"UnixReviewTime of result {i + 1}:\n\t{resultDoc.Get("UnixReviewTime")}");
+                Console.WriteLine($"OverAll of result {i + 1}:\n\t{resultDoc.Get("OverAll")}");
+                Console.WriteLine($"Helpfulness of result {i + 1}:\n\t{resultDoc.Get("Helpfulness")}");
+                Console.WriteLine("==============================================");
             }
         }
     }
