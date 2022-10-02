@@ -6,7 +6,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace SearchEngine4TextClass.Model
+namespace ConsoleVer
 {
     internal class JsonDeserialization
     {
@@ -21,7 +21,7 @@ namespace SearchEngine4TextClass.Model
         {
             this.ThreadCount = Threads;
             this.JSONRecords = File.ReadLines(FileLocation).ToList();
-            this.RecordCount=this.JSONRecords.Count;
+            this.RecordCount = this.JSONRecords.Count;
             this.TaskLoad = this.RecordCount / ThreadCount;
             this.SamplingCount = SampCount;
         }
@@ -63,13 +63,13 @@ namespace SearchEngine4TextClass.Model
             Random rnd = new Random(DateTime.Now.Ticks.GetHashCode());
             while (true)
             {
-                if(radomIndex.Count == SamplingCount)
+                if (radomIndex.Count == SamplingCount)
                 {
                     break;
                 }
                 radomIndex.Add(rnd.Next(0, allPID.Count - 1));
             }
-            foreach(var inx in radomIndex)
+            foreach (var inx in radomIndex)
             {
                 this.SampledProductIDs.Add(allPID[inx]);
             }

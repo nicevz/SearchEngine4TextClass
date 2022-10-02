@@ -3,12 +3,16 @@
     x:Class="SearchEngine4TextClass.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:local="clr-namespace:SearchEngine4TextClass"
+    xmlns:views="clr-namespace:SearchEngine4TextClass.Views"
     Shell.FlyoutBehavior="Disabled">
 
-    <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
+    <FlyoutItem>
+        <Tab Title="Home" Icon="{FontImage Glyph='🏠'}">
+            <ShellContent Title="HomePage" Icon="{FontImage Glyph='🏡'}"
+                          ContentTemplate="{DataTemplate views:MainPage}"/>
+        </Tab>
+        <ShellContent Title="TestPage" Icon="{FontImage Glyph='⛔'}"
+                      ContentTemplate="{DataTemplate views:TestPage}"/>
+    </FlyoutItem>
 
 </Shell>

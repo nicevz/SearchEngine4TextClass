@@ -1,4 +1,4 @@
-﻿namespace SearchEngine4TextClass;
+﻿namespace SearchEngine4TextClass.Views;
 
 public partial class MainPage : ContentPage
 {

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:SearchEngine4TextClass.Model"
+             x:Class="SearchEngine4TextClass.Views.TestPage"
+             Title="TestPage">
+    <ScrollView>
+        <VerticalStackLayout>
+            <Slider x:Name="threadSlider" Minimum="1" Maximum="16" Value="{Binding threadsCount}"/>
+            <Label Text="threads"/>
+            <Editor x:Name="locationEditor" Text="{Binding fileLocation}"/>
+            <Label Text="file location"/>
+            <Slider x:Name="samplingSlider" Minimum="200" Maximum="400" Value="{Binding samplingCount}"/>
+            <Label Text="samples"/>
+            <Button x:Name="testBtn1" Text="sample" Clicked="testBtn1_Clicked"/>
+            <Label Text="{Binding productName, Mode=TwoWay}"/>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
