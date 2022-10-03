@@ -7,6 +7,7 @@ using Lucene.Net.Search;
 using Lucene.Net.Store;
 using Lucene.Net.Util;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Text.Json;
 using LuceneDirectory = Lucene.Net.Store.Directory;
 
@@ -54,6 +55,8 @@ namespace ConsoleVer
         }
         ObservableCollection<ReviewObject> AddingDocuments(int StartIndex, int Count)
         {
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
             ObservableCollection<ReviewObject> result = new ObservableCollection<ReviewObject>();
             //Console.WriteLine("=======s:{0}; c:{1}", StartIndex, Count);
             foreach (var record in JSONRecords.GetRange(StartIndex, Count))
@@ -64,7 +67,7 @@ namespace ConsoleVer
                 doc.Add(new TextField("ProductID", tmpReviewObj.ProductID, Field.Store.YES));
                 doc.Add(new TextField("Summary", tmpReviewObj.SummaryText, Field.Store.YES));
                 doc.Add(new TextField("ReviewerID", tmpReviewObj.ReviewerID, Field.Store.YES));
-                doc.Add(new TextField("ReviewerName", (tmpReviewObj.ReviewerName == null ? "NULL" : tmpReviewObj.ReviewerName), Field.Store.YES));
+                doc.Add(new TextField("ReviewerName", (tmpReviewObj.ReviewerName == null ? "Anonymous" : tmpReviewObj.ReviewerName), Field.Store.YES));
                 doc.Add(new TextField("ReviewTime", tmpReviewObj.ReviewTime, Field.Store.YES));
                 doc.Add(new Int32Field("UnixReviewTime", tmpReviewObj.UnixReviewTime, Field.Store.YES));
                 doc.Add(new DoubleField("OverAll", tmpReviewObj.OverallRating, Field.Store.YES));
@@ -72,6 +75,7 @@ namespace ConsoleVer
                 writer.AddDocument(doc);
                 result.Add(tmpReviewObj);
             }
+            Console.WriteLine("=======ThreadID:{0}; TIME:{1}ms", Thread.CurrentThread.ManagedThreadId, sw.Elapsed.TotalMilliseconds);
             return result;
         }
         public async Task<IEnumerable<ObservableCollection<ReviewObject>>> TaskScheduler4AddingDocs()
@@ -87,14 +91,44 @@ namespace ConsoleVer
             tasks.Add(Task.Run(() => AddingDocuments(lastStartingIndex, lastCount)));
             return await Task.WhenAll(tasks);
         }
-        public void FTS(string term)
+        public void FTS(string term,int num)
         {
             using DirectoryReader reader = writer.GetReader(applyAllDeletes: true);
             IndexSearcher searcher = new IndexSearcher(reader);
 
             QueryParser parser = new QueryParser(luceneVersion, "ReviewText", indexingAnalyzer);
             Query query = parser.Parse($"{term}");
-            TopDocs topDocs = searcher.Search(query, 10);
+            TopDocs topDocs = searcher.Search(query, num);
+
+
+            Console.WriteLine($"Matching results: {topDocs.TotalHits}");
+
+            for (int i = 0; i < topDocs.ScoreDocs.Length; i++)
+            {
+                //read back a doc from results
+                Document resultDoc = searcher.Doc(topDocs.ScoreDocs[i].Doc);
+                Console.WriteLine("==============================================");
+                Console.WriteLine($"ReviewText of result {i + 1}:\n\t{resultDoc.Get("ReviewText")}");
+                Console.WriteLine($"ProductID of result {i + 1}:\n\t{resultDoc.Get("ProductID")}");
+                Console.WriteLine($"Summary of result {i + 1}:\n\t{resultDoc.Get("Summary")}");
+                Console.WriteLine($"ReviewerID of result {i + 1}:\n\t{resultDoc.Get("ReviewerID")}");
+                Console.WriteLine($"ReviewerName of result {i + 1}:\n\t{resultDoc.Get("ReviewerName")}");
+                Console.WriteLine($"ReviewTime of result {i + 1}:\n\t{resultDoc.Get("ReviewTime")}");
+                Console.WriteLine($"UnixReviewTime of result {i + 1}:\n\t{resultDoc.Get("UnixReviewTime")}");
+                Console.WriteLine($"OverAll of result {i + 1}:\n\t{resultDoc.Get("OverAll")}");
+                Console.WriteLine($"Helpfulness of result {i + 1}:\n\t{resultDoc.Get("Helpfulness")}");
+                Console.WriteLine($"Score of result {i + 1}:\n\t{topDocs.ScoreDocs[i].Score}");
+                Console.WriteLine("==============================================");
+            }
+        }
+        public void RFTS(string term1,string term2,int num)
+        {
+            using DirectoryReader reader = writer.GetReader(applyAllDeletes: true);
+            IndexSearcher searcher = new IndexSearcher(reader);
+
+            QueryParser parser = new QueryParser(luceneVersion, "ReviewText", indexingAnalyzer);
+            Query query = parser.Parse($"{term1} "+$"ProductID:{term2}");
+            TopDocs topDocs = searcher.Search(query, num);
 
 
             Console.WriteLine($"Matching results: {topDocs.TotalHits}");
@@ -116,33 +150,11 @@ namespace ConsoleVer
                 Console.WriteLine("==============================================");
             }
         }
-        public void RFTS(string term1,string term2)
+        public static void test()
         {
-            using DirectoryReader reader = writer.GetReader(applyAllDeletes: true);
-            IndexSearcher searcher = new IndexSearcher(reader);
-
-            QueryParser parser = new QueryParser(luceneVersion, "ReviewText", indexingAnalyzer);
-            Query query = parser.Parse($"{term1} "+$"ProductID:{term2}");
-            TopDocs topDocs = searcher.Search(query, 10);
-
-
-            Console.WriteLine($"Matching results: {topDocs.TotalHits}");
-
-            for (int i = 0; i < topDocs.ScoreDocs.Length; i++)
+            foreach (var a in EnglishAnalyzer.DefaultStopSet)
             {
-                //read back a doc from results
-                Document resultDoc = searcher.Doc(topDocs.ScoreDocs[i].Doc);
-                Console.WriteLine("==============================================");
-                Console.WriteLine($"ReviewText of result {i + 1}:\n\t{resultDoc.Get("ReviewText")}");
-                Console.WriteLine($"ProductID of result {i + 1}:\n\t{resultDoc.Get("ProductID")}");
-                Console.WriteLine($"Summary of result {i + 1}:\n\t{resultDoc.Get("Summary")}");
-                Console.WriteLine($"ReviewerID of result {i + 1}:\n\t{resultDoc.Get("ReviewerID")}");
-                Console.WriteLine($"ReviewerName of result {i + 1}:\n\t{resultDoc.Get("ReviewerName")}");
-                Console.WriteLine($"ReviewTime of result {i + 1}:\n\t{resultDoc.Get("ReviewTime")}");
-                Console.WriteLine($"UnixReviewTime of result {i + 1}:\n\t{resultDoc.Get("UnixReviewTime")}");
-                Console.WriteLine($"OverAll of result {i + 1}:\n\t{resultDoc.Get("OverAll")}");
-                Console.WriteLine($"Helpfulness of result {i + 1}:\n\t{resultDoc.Get("Helpfulness")}");
-                Console.WriteLine("==============================================");
+                Console.WriteLine(a);
             }
         }
     }
