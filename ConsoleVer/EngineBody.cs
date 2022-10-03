@@ -15,6 +15,10 @@ namespace ConsoleVer
 {
     internal class EngineBody
     {
+        void mywrtL(string a)
+        {
+            Console.WriteLine("\u001b[35m" + "\u001b[1m" + a + "\u001b[0m");
+        }
         int ThreadCount;
         int TaskLoad;
         int RecordCount;
@@ -58,7 +62,7 @@ namespace ConsoleVer
             Stopwatch sw = new Stopwatch();
             sw.Start();
             ObservableCollection<ReviewObject> result = new ObservableCollection<ReviewObject>();
-            //Console.WriteLine("=======s:{0}; c:{1}", StartIndex, Count);
+            //mywrtL("=======s:{0}; c:{1}", StartIndex, Count);
             foreach (var record in JSONRecords.GetRange(StartIndex, Count))
             {
                 ReviewObject tmpReviewObj = JsonSerializer.Deserialize<ReviewObject>(record);
@@ -101,52 +105,85 @@ namespace ConsoleVer
             TopDocs topDocs = searcher.Search(query, num);
 
 
-            Console.WriteLine($"Matching results: {topDocs.TotalHits}");
+            mywrtL($"Matching results: {topDocs.TotalHits}");
 
             for (int i = 0; i < topDocs.ScoreDocs.Length; i++)
             {
                 //read back a doc from results
                 Document resultDoc = searcher.Doc(topDocs.ScoreDocs[i].Doc);
                 Console.WriteLine("==============================================");
-                Console.WriteLine($"ReviewText of result {i + 1}:\n\t{resultDoc.Get("ReviewText")}");
-                Console.WriteLine($"ProductID of result {i + 1}:\n\t{resultDoc.Get("ProductID")}");
-                Console.WriteLine($"Summary of result {i + 1}:\n\t{resultDoc.Get("Summary")}");
-                Console.WriteLine($"ReviewerID of result {i + 1}:\n\t{resultDoc.Get("ReviewerID")}");
-                Console.WriteLine($"ReviewerName of result {i + 1}:\n\t{resultDoc.Get("ReviewerName")}");
-                Console.WriteLine($"ReviewTime of result {i + 1}:\n\t{resultDoc.Get("ReviewTime")}");
-                Console.WriteLine($"UnixReviewTime of result {i + 1}:\n\t{resultDoc.Get("UnixReviewTime")}");
-                Console.WriteLine($"OverAll of result {i + 1}:\n\t{resultDoc.Get("OverAll")}");
-                Console.WriteLine($"Helpfulness of result {i + 1}:\n\t{resultDoc.Get("Helpfulness")}");
-                Console.WriteLine($"Score of result {i + 1}:\n\t{topDocs.ScoreDocs[i].Score}");
+                mywrtL($"ReviewText of result {i + 1}:\n\t{resultDoc.Get("ReviewText")}");
+                mywrtL($"ProductID of result {i + 1}:\n\t{resultDoc.Get("ProductID")}");
+                mywrtL($"Summary of result {i + 1}:\n\t{resultDoc.Get("Summary")}");
+                mywrtL($"ReviewerID of result {i + 1}:\n\t{resultDoc.Get("ReviewerID")}");
+                mywrtL($"ReviewerName of result {i + 1}:\n\t{resultDoc.Get("ReviewerName")}");
+                mywrtL($"ReviewTime of result {i + 1}:\n\t{resultDoc.Get("ReviewTime")}");
+                mywrtL($"UnixReviewTime of result {i + 1}:\n\t{resultDoc.Get("UnixReviewTime")}");
+                mywrtL($"OverAll of result {i + 1}:\n\t{resultDoc.Get("OverAll")}");
+                mywrtL($"Helpfulness of result {i + 1}:\n\t{resultDoc.Get("Helpfulness")}");
+                mywrtL($"Score of result {i + 1}:\n\t{topDocs.ScoreDocs[i].Score}");
                 Console.WriteLine("==============================================");
             }
         }
-        public void RFTS(string term1,string term2,int num)
+        public void RFTS(string term1,string term2,string term3,int num)
         {
             using DirectoryReader reader = writer.GetReader(applyAllDeletes: true);
             IndexSearcher searcher = new IndexSearcher(reader);
 
             QueryParser parser = new QueryParser(luceneVersion, "ReviewText", indexingAnalyzer);
-            Query query = parser.Parse($"{term1} "+$"ProductID:{term2}");
+            Query query = parser.Parse($"+{term1} "+$"+{term3}:{term2}");
+
             TopDocs topDocs = searcher.Search(query, num);
 
 
-            Console.WriteLine($"Matching results: {topDocs.TotalHits}");
+            mywrtL($"Matching results: {topDocs.TotalHits}");
 
             for (int i = 0; i < topDocs.ScoreDocs.Length; i++)
             {
                 //read back a doc from results
                 Document resultDoc = searcher.Doc(topDocs.ScoreDocs[i].Doc);
                 Console.WriteLine("==============================================");
-                Console.WriteLine($"ReviewText of result {i + 1}:\n\t{resultDoc.Get("ReviewText")}");
-                Console.WriteLine($"ProductID of result {i + 1}:\n\t{resultDoc.Get("ProductID")}");
-                Console.WriteLine($"Summary of result {i + 1}:\n\t{resultDoc.Get("Summary")}");
-                Console.WriteLine($"ReviewerID of result {i + 1}:\n\t{resultDoc.Get("ReviewerID")}");
-                Console.WriteLine($"ReviewerName of result {i + 1}:\n\t{resultDoc.Get("ReviewerName")}");
-                Console.WriteLine($"ReviewTime of result {i + 1}:\n\t{resultDoc.Get("ReviewTime")}");
-                Console.WriteLine($"UnixReviewTime of result {i + 1}:\n\t{resultDoc.Get("UnixReviewTime")}");
-                Console.WriteLine($"OverAll of result {i + 1}:\n\t{resultDoc.Get("OverAll")}");
-                Console.WriteLine($"Helpfulness of result {i + 1}:\n\t{resultDoc.Get("Helpfulness")}");
+                mywrtL($"ReviewText of result {i + 1}:\n\t{resultDoc.Get("ReviewText")}");
+                mywrtL($"ProductID of result {i + 1}:\n\t{resultDoc.Get("ProductID")}");
+                mywrtL($"Summary of result {i + 1}:\n\t{resultDoc.Get("Summary")}");
+                mywrtL($"ReviewerID of result {i + 1}:\n\t{resultDoc.Get("ReviewerID")}");
+                mywrtL($"ReviewerName of result {i + 1}:\n\t{resultDoc.Get("ReviewerName")}");
+                mywrtL($"ReviewTime of result {i + 1}:\n\t{resultDoc.Get("ReviewTime")}");
+                mywrtL($"UnixReviewTime of result {i + 1}:\n\t{resultDoc.Get("UnixReviewTime")}");
+                mywrtL($"OverAll of result {i + 1}:\n\t{resultDoc.Get("OverAll")}");
+                mywrtL($"Helpfulness of result {i + 1}:\n\t{resultDoc.Get("Helpfulness")}");
+                mywrtL($"Score of result {i + 1}:\n\t{topDocs.ScoreDocs[i].Score}");
+                Console.WriteLine("==============================================");
+            }
+        }
+        public void RS(string term2, string term3, int num)
+        {
+            using DirectoryReader reader = writer.GetReader(applyAllDeletes: true);
+            IndexSearcher searcher = new IndexSearcher(reader);
+
+            QueryParser parser = new QueryParser(luceneVersion, "ReviewText", indexingAnalyzer);
+            Query query = parser.Parse($"+{term3}:{term2}");
+
+            TopDocs topDocs = searcher.Search(query, num);
+
+
+            mywrtL($"Matching results: {topDocs.TotalHits}");
+
+            for (int i = 0; i < topDocs.ScoreDocs.Length; i++)
+            {
+                //read back a doc from results
+                Document resultDoc = searcher.Doc(topDocs.ScoreDocs[i].Doc);
+                Console.WriteLine("==============================================");
+                mywrtL($"ReviewText of result {i + 1}:\n\t{resultDoc.Get("ReviewText")}");
+                mywrtL($"ProductID of result {i + 1}:\n\t{resultDoc.Get("ProductID")}");
+                mywrtL($"Summary of result {i + 1}:\n\t{resultDoc.Get("Summary")}");
+                mywrtL($"ReviewerID of result {i + 1}:\n\t{resultDoc.Get("ReviewerID")}");
+                mywrtL($"ReviewerName of result {i + 1}:\n\t{resultDoc.Get("ReviewerName")}");
+                mywrtL($"ReviewTime of result {i + 1}:\n\t{resultDoc.Get("ReviewTime")}");
+                mywrtL($"UnixReviewTime of result {i + 1}:\n\t{resultDoc.Get("UnixReviewTime")}");
+                mywrtL($"OverAll of result {i + 1}:\n\t{resultDoc.Get("OverAll")}");
+                mywrtL($"Helpfulness of result {i + 1}:\n\t{resultDoc.Get("Helpfulness")}");
+                mywrtL($"Score of result {i + 1}:\n\t{topDocs.ScoreDocs[i].Score}");
                 Console.WriteLine("==============================================");
             }
         }
