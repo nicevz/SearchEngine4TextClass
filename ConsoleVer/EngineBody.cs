@@ -122,6 +122,7 @@ namespace ConsoleVer
                 mywrtL($"OverAll of result {i + 1}:\n\t{resultDoc.Get("OverAll")}");
                 mywrtL($"Helpfulness of result {i + 1}:\n\t{resultDoc.Get("Helpfulness")}");
                 mywrtL($"Score of result {i + 1}:\n\t{topDocs.ScoreDocs[i].Score}");
+                mywrtL($"DocID of result {i + 1}:\n\t{topDocs.ScoreDocs[i].Doc}");
                 Console.WriteLine("==============================================");
             }
         }
@@ -153,6 +154,7 @@ namespace ConsoleVer
                 mywrtL($"OverAll of result {i + 1}:\n\t{resultDoc.Get("OverAll")}");
                 mywrtL($"Helpfulness of result {i + 1}:\n\t{resultDoc.Get("Helpfulness")}");
                 mywrtL($"Score of result {i + 1}:\n\t{topDocs.ScoreDocs[i].Score}");
+                mywrtL($"DocID of result {i + 1}:\n\t{topDocs.ScoreDocs[i].Doc}");
                 Console.WriteLine("==============================================");
             }
         }
@@ -184,6 +186,7 @@ namespace ConsoleVer
                 mywrtL($"OverAll of result {i + 1}:\n\t{resultDoc.Get("OverAll")}");
                 mywrtL($"Helpfulness of result {i + 1}:\n\t{resultDoc.Get("Helpfulness")}");
                 mywrtL($"Score of result {i + 1}:\n\t{topDocs.ScoreDocs[i].Score}");
+                mywrtL($"DocID of result {i + 1}:\n\t{topDocs.ScoreDocs[i].Doc}");
                 Console.WriteLine("==============================================");
             }
         }
