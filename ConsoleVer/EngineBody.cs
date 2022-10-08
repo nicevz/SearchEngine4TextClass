@@ -95,6 +95,23 @@ namespace ConsoleVer
             tasks.Add(Task.Run(() => AddingDocuments(lastStartingIndex, lastCount)));
             return await Task.WhenAll(tasks);
         }
+        void printingResults(int i,TopDocs topDocs,Document resultDoc)
+        {
+            Console.WriteLine("==============================================");
+            mywrtL($"ReviewText of result {i + 1}:\n\t{resultDoc.Get("ReviewText")}");
+            mywrtL($"ProductID of result {i + 1}:\n\t{resultDoc.Get("ProductID")}");
+            mywrtL($"Summary of result {i + 1}:\n\t{resultDoc.Get("Summary")}");
+            mywrtL($"ReviewerID of result {i + 1}:\n\t{resultDoc.Get("ReviewerID")}");
+            mywrtL($"ReviewerName of result {i + 1}:\n\t{resultDoc.Get("ReviewerName")}");
+            mywrtL($"ReviewTime of result {i + 1}:\n\t{resultDoc.Get("ReviewTime")}");
+            mywrtL($"UnixReviewTime of result {i + 1}:\n\t{resultDoc.Get("UnixReviewTime")}");
+            mywrtL($"OverAll of result {i + 1}:\n\t{resultDoc.Get("OverAll")}");
+            mywrtL($"Helpfulness of result {i + 1}:\n\t{resultDoc.Get("Helpfulness")}");
+            mywrtL($"Score of result {i + 1}:\n\t{topDocs.ScoreDocs[i].Score}");
+            mywrtL($"DocID of result {i + 1}:\n\t{topDocs.ScoreDocs[i].Doc}");
+            Console.WriteLine("==============================================");
+        }
+
         public void FTS(string term,int num)
         {
             using DirectoryReader reader = writer.GetReader(applyAllDeletes: true);
@@ -111,19 +128,7 @@ namespace ConsoleVer
             {
                 //read back a doc from results
                 Document resultDoc = searcher.Doc(topDocs.ScoreDocs[i].Doc);
-                Console.WriteLine("==============================================");
-                mywrtL($"ReviewText of result {i + 1}:\n\t{resultDoc.Get("ReviewText")}");
-                mywrtL($"ProductID of result {i + 1}:\n\t{resultDoc.Get("ProductID")}");
-                mywrtL($"Summary of result {i + 1}:\n\t{resultDoc.Get("Summary")}");
-                mywrtL($"ReviewerID of result {i + 1}:\n\t{resultDoc.Get("ReviewerID")}");
-                mywrtL($"ReviewerName of result {i + 1}:\n\t{resultDoc.Get("ReviewerName")}");
-                mywrtL($"ReviewTime of result {i + 1}:\n\t{resultDoc.Get("ReviewTime")}");
-                mywrtL($"UnixReviewTime of result {i + 1}:\n\t{resultDoc.Get("UnixReviewTime")}");
-                mywrtL($"OverAll of result {i + 1}:\n\t{resultDoc.Get("OverAll")}");
-                mywrtL($"Helpfulness of result {i + 1}:\n\t{resultDoc.Get("Helpfulness")}");
-                mywrtL($"Score of result {i + 1}:\n\t{topDocs.ScoreDocs[i].Score}");
-                mywrtL($"DocID of result {i + 1}:\n\t{topDocs.ScoreDocs[i].Doc}");
-                Console.WriteLine("==============================================");
+                printingResults(i, topDocs, resultDoc);
             }
         }
         public void RFTS(string term1,string term2,string term3,int num)
@@ -143,19 +148,7 @@ namespace ConsoleVer
             {
                 //read back a doc from results
                 Document resultDoc = searcher.Doc(topDocs.ScoreDocs[i].Doc);
-                Console.WriteLine("==============================================");
-                mywrtL($"ReviewText of result {i + 1}:\n\t{resultDoc.Get("ReviewText")}");
-                mywrtL($"ProductID of result {i + 1}:\n\t{resultDoc.Get("ProductID")}");
-                mywrtL($"Summary of result {i + 1}:\n\t{resultDoc.Get("Summary")}");
-                mywrtL($"ReviewerID of result {i + 1}:\n\t{resultDoc.Get("ReviewerID")}");
-                mywrtL($"ReviewerName of result {i + 1}:\n\t{resultDoc.Get("ReviewerName")}");
-                mywrtL($"ReviewTime of result {i + 1}:\n\t{resultDoc.Get("ReviewTime")}");
-                mywrtL($"UnixReviewTime of result {i + 1}:\n\t{resultDoc.Get("UnixReviewTime")}");
-                mywrtL($"OverAll of result {i + 1}:\n\t{resultDoc.Get("OverAll")}");
-                mywrtL($"Helpfulness of result {i + 1}:\n\t{resultDoc.Get("Helpfulness")}");
-                mywrtL($"Score of result {i + 1}:\n\t{topDocs.ScoreDocs[i].Score}");
-                mywrtL($"DocID of result {i + 1}:\n\t{topDocs.ScoreDocs[i].Doc}");
-                Console.WriteLine("==============================================");
+                printingResults(i, topDocs, resultDoc);
             }
         }
         public void RS(string term2, string term3, int num)
@@ -175,22 +168,10 @@ namespace ConsoleVer
             {
                 //read back a doc from results
                 Document resultDoc = searcher.Doc(topDocs.ScoreDocs[i].Doc);
-                Console.WriteLine("==============================================");
-                mywrtL($"ReviewText of result {i + 1}:\n\t{resultDoc.Get("ReviewText")}");
-                mywrtL($"ProductID of result {i + 1}:\n\t{resultDoc.Get("ProductID")}");
-                mywrtL($"Summary of result {i + 1}:\n\t{resultDoc.Get("Summary")}");
-                mywrtL($"ReviewerID of result {i + 1}:\n\t{resultDoc.Get("ReviewerID")}");
-                mywrtL($"ReviewerName of result {i + 1}:\n\t{resultDoc.Get("ReviewerName")}");
-                mywrtL($"ReviewTime of result {i + 1}:\n\t{resultDoc.Get("ReviewTime")}");
-                mywrtL($"UnixReviewTime of result {i + 1}:\n\t{resultDoc.Get("UnixReviewTime")}");
-                mywrtL($"OverAll of result {i + 1}:\n\t{resultDoc.Get("OverAll")}");
-                mywrtL($"Helpfulness of result {i + 1}:\n\t{resultDoc.Get("Helpfulness")}");
-                mywrtL($"Score of result {i + 1}:\n\t{topDocs.ScoreDocs[i].Score}");
-                mywrtL($"DocID of result {i + 1}:\n\t{topDocs.ScoreDocs[i].Doc}");
-                Console.WriteLine("==============================================");
+                printingResults(i, topDocs, resultDoc);
             }
         }
-        public static void test()
+        public static void stopWords()
         {
             foreach (var a in EnglishAnalyzer.DefaultStopSet)
             {
