@@ -12,13 +12,13 @@ void mywrtL(string a)
     Console.WriteLine("\u001b[32m" + "\u001b[1m" + a + "\u001b[0m");
 }
 
-mywrtL("=============================================");
+mywrtL("========================================================");
 mywrtL("Select Modes:");
 mywrtL("0. Create Sampled dataset");
 mywrtL("1. Do Full Text Search on ReviewText Field");
 mywrtL("2. Do Restrained Full Text Search on ReviewText Field");
 mywrtL("3. Search a Specific item feature");
-mywrtL("=============================================");
+mywrtL("========================================================");
 int mode;
 Console.Write("Your Choice: ");
 if (int.TryParse(Console.ReadLine().Trim(), out mode))
@@ -93,7 +93,6 @@ if (int.TryParse(Console.ReadLine().Trim(), out mode))
                             default:
                                 mywrtL("Wrong number!😡👊👊👊👊");
                                 continue;
-                                break;
                         }
                     }
                     else
@@ -108,7 +107,6 @@ if (int.TryParse(Console.ReadLine().Trim(), out mode))
                 else
                     mywrtL("Wrong number!😡👊👊👊👊");
             }
-            break;
         case 3:
             while (true)
             {
@@ -153,7 +151,6 @@ if (int.TryParse(Console.ReadLine().Trim(), out mode))
                 else
                     mywrtL("Wrong number!😡👊👊👊👊");
             }
-            break;
         default:
             mywrtL("Wrong mode!😡👊👊👊👊");
             break;
