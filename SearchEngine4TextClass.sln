@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31611.283
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SearchEngine4TextClass", "SearchEngine4TextClass\SearchEngine4TextClass.csproj", "{7820A10A-1AE1-4D00-870B-7017A78C1D92}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SearchEngine4TextClass (Obsolete)", "SearchEngine4TextClass\SearchEngine4TextClass (Obsolete).csproj", "{7820A10A-1AE1-4D00-870B-7017A78C1D92}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleVer", "ConsoleVer\ConsoleVer.csproj", "{443B8C2C-0173-42C7-93C6-B47F38CBF0E2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleVer", "ConsoleVer\ConsoleVer.csproj", "{443B8C2C-0173-42C7-93C6-B47F38CBF0E2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

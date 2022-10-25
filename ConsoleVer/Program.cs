@@ -102,7 +102,10 @@ if (int.TryParse(Console.ReadLine().Trim(), out mode))
                     }
                     mywrtL("Write your sub-query down below:");
                     string term2 = Console.ReadLine();
+                    Stopwatch sw = new Stopwatch();
+                    sw.Start();
                     engine.RFTS(term1, term2, choiceString, num);
+                    mywrtL($"Query Time: {sw.Elapsed.TotalMilliseconds}ms");
                 }
                 else
                     mywrtL("Wrong number!😡👊👊👊👊");

@@ -25,7 +25,7 @@ namespace ConsoleVer
         /// <param name="a">what you want to print</param>
         void mywrtL(string a)
         {
-            Console.WriteLine("\u001b[35m" + "\u001b[1m" + a + "\u001b[0m");
+            Console.WriteLine("\u001b[36m" + "\u001b[1m" + a + "\u001b[0m");
         }
 
         int ThreadCount;
@@ -189,6 +189,11 @@ namespace ConsoleVer
         /// <param name="num">top N results</param>
         public void RFTS(string term1,string term2,string term3,int num)
         {
+            //Field a = new Field(term3, term2, StringField);
+            //FilterAtomicReader.FilterFields strings=new FilterAtomicReader.FilterFields()
+
+
+
             //define a searcher using reader from the index writer
             using DirectoryReader reader = writer.GetReader(applyAllDeletes: true);
             IndexSearcher searcher = new IndexSearcher(reader);
@@ -198,7 +203,7 @@ namespace ConsoleVer
             //using the parsed key words to search for top docs
             TopDocs topDocs = searcher.Search(query, num);
 
-            mywrtL($"Matching results: {topDocs.TotalHits}");
+
 
             for (int i = 0; i < topDocs.ScoreDocs.Length; i++)
             {
@@ -207,6 +212,7 @@ namespace ConsoleVer
                 //print it
                 printingResults(i, topDocs, resultDoc);
             }
+            mywrtL($"Matching results: {topDocs.TotalHits}");
         }
         /// <summary>
         /// search all related review objects given one required field
